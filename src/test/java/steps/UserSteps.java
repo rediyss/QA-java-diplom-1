@@ -35,4 +35,12 @@ public class UserSteps {
     public String extractAccessToken(Response response) {
         return response.jsonPath().getString("accessToken").replace("Bearer ", "");
     }
+    @Step("Логин пользователя: {payload}")
+    public Response loginUser(String payload) {
+        return given()
+                .header("Content-type", "application/json")
+                .body(payload)
+                .when()
+                .post("/api/auth/login");
+    }
 }
