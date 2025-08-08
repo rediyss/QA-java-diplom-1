@@ -91,7 +91,8 @@ public class BurgerTest {
         String expectedReceipt =
                 "(==== Булочка ====)\n" +
                         "= sauce Чесночный соус =\n" +
-                        "(==== Булочка ====)\n\n" +
+                        "(==== Булочка ====)\n" +
+                        "\n" +
                         "Price: 5,500000\n";
 
         String actualReceipt = burger.getReceipt();
