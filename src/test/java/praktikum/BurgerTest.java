@@ -1,9 +1,10 @@
 package praktikum;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.within;
 import static org.mockito.Mockito.*;
 
 public class BurgerTest {
@@ -22,21 +23,27 @@ public class BurgerTest {
     @Test
     public void testSetBuns() {
         burger.setBuns(mockBun);
-        assertEquals(mockBun, burger.bun);
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(burger.bun).isEqualTo(mockBun);
+        softly.assertAll();
     }
 
     @Test
     public void testAddIngredient() {
         burger.addIngredient(mockIngredient);
-        assertEquals(1, burger.ingredients.size());
-        assertEquals(mockIngredient, burger.ingredients.get(0));
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(burger.ingredients).hasSize(1);
+        softly.assertThat(burger.ingredients.get(0)).isEqualTo(mockIngredient);
+        softly.assertAll();
     }
 
     @Test
     public void testRemoveIngredient() {
         burger.addIngredient(mockIngredient);
         burger.removeIngredient(0);
-        assertTrue(burger.ingredients.isEmpty());
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(burger.ingredients).isEmpty();
+        softly.assertAll();
     }
 
     @Test
@@ -46,8 +53,11 @@ public class BurgerTest {
         burger.addIngredient(ing1);
         burger.addIngredient(ing2);
         burger.moveIngredient(0, 1);
-        assertEquals(ing2, burger.ingredients.get(0));
-        assertEquals(ing1, burger.ingredients.get(1));
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(burger.ingredients.get(0)).isEqualTo(ing2);
+        softly.assertThat(burger.ingredients.get(1)).isEqualTo(ing1);
+        softly.assertAll();
     }
 
     @Test
@@ -59,7 +69,11 @@ public class BurgerTest {
         burger.addIngredient(mockIngredient);
 
         float expected = 2.0f * 2 + 1.5f;
-        assertEquals(expected, burger.getPrice(), 0.001);
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat((double) burger.getPrice())
+                .isCloseTo((double) expected, within(0.001));
+        softly.assertAll();
     }
 
     @Test
@@ -74,13 +88,16 @@ public class BurgerTest {
         burger.setBuns(mockBun);
         burger.addIngredient(mockIngredient);
 
-        String receipt = burger.getReceipt();
+        String expectedReceipt =
+                "(==== Булочка ====)\n" +
+                        "= sauce Чесночный соус =\n" +
+                        "(==== Булочка ====)\n\n" +
+                        "Price: 5,500000\n";
 
-        System.out.println("Receipt:\n" + receipt); // не проходил тест проверял там была запятая а не точка:)
+        String actualReceipt = burger.getReceipt();
 
-        assertTrue(receipt.contains("(==== Булочка ====)"));
-        assertTrue(receipt.toLowerCase().contains("sauce")); // lowercase для type
-        assertTrue(receipt.contains("Чесночный соус"));
-        assertTrue(receipt.contains("Price: 5,500000"));
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(actualReceipt).isEqualTo(expectedReceipt);
+        softly.assertAll();
     }
 }

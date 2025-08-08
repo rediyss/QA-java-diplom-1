@@ -46,9 +46,7 @@ public class BurgerParameterizedAddIngredientTest {
         when(mockIngredient.getType()).thenReturn(type);
         when(mockIngredient.getName()).thenReturn(name);
         when(mockIngredient.getPrice()).thenReturn(price);
-
         burger.addIngredient(mockIngredient);
-
         assertEquals(1, burger.ingredients.size());
     }
 
