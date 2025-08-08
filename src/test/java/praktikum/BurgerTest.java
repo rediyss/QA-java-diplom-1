@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.within;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class BurgerTest {
@@ -88,12 +89,16 @@ public class BurgerTest {
         burger.setBuns(mockBun);
         burger.addIngredient(mockIngredient);
 
-        String expectedReceipt =
-                "(==== Булочка ====)\n" +
-                        "= sauce Чесночный соус =\n" +
-                        "(==== Булочка ====)\n" +
-                        "\n" +
-                        "Price: 5,500000\n";
+        String expectedReceipt = String.format(
+                "(==== %s ====)%n" +
+                        "= %s %s =%n" +
+                        "(==== %s ====)%n" +
+                        "%nPrice: %f%n",
+                "Булочка",
+                "sauce", "Чесночный соус",
+                "Булочка",
+                5.5f
+        );
 
         String actualReceipt = burger.getReceipt();
 
@@ -101,4 +106,5 @@ public class BurgerTest {
         softly.assertThat(actualReceipt).isEqualTo(expectedReceipt);
         softly.assertAll();
     }
+
 }
